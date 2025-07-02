@@ -13,14 +13,24 @@ export async function extractIngredientsAndRecipes(imageFile: File): Promise<str
     const imageData = await fileToGenerativePart(imageFile);
     
     const prompt = `
-You are a smart kitchen assistant.
+You are a smart kitchen assistant. Please analyze this image and provide:
 
-1. First, list all identifiable ingredients from this image.
-2. Then, suggest 2–3 easy recipes using those ingredients.
-Each recipe should have:
-- Title
-- Ingredient list  
-- Steps (in bullet points)
+## 🥕 Ingredients Identified:
+List all identifiable ingredients from this image with bullet points.
+
+## 🍽️ Recipe Suggestions:
+Suggest 2-3 easy recipes using those ingredients. Format each recipe as:
+
+### Recipe Name
+**Ingredients:**
+- ingredient 1
+- ingredient 2
+
+**Steps:**
+1. step one
+2. step two
+
+Keep responses clean, organized, and easy to read.
 `;
 
     const result = await model.generateContent([prompt, imageData]);
@@ -42,15 +52,25 @@ export async function chatWithAI(message: string, imageFile?: File): Promise<str
       prompt = `
 You are a helpful cooking assistant. The user said: "${message}"
 
-Please analyze this image and respond to their question. If they're asking about ingredients or recipes, 
-provide helpful cooking advice, recipe suggestions, or ingredient information based on what you see in the image.
+Please analyze this image and respond to their question. Provide helpful, well-organized responses using:
+- Clear headings with emojis (##)
+- Bullet points for lists
+- Numbered steps for instructions
+- Keep responses concise and practical
+
+Focus on ingredients or recipes based on what you see in the image.
 `;
       content = [prompt, imageData];
     } else {
       prompt = `
 You are a helpful cooking assistant. The user said: "${message}"
 
-Please provide helpful cooking advice, recipe suggestions, cooking tips, or answer any culinary questions they might have.
+Please provide helpful cooking advice using clear formatting:
+- Use headings with emojis (##)
+- Bullet points for ingredient lists
+- Numbered steps for instructions
+- Keep responses concise and practical
+
 Be friendly and informative in your response.
 `;
       content = [prompt];

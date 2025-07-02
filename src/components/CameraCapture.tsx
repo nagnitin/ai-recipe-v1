@@ -84,8 +84,42 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
     }
   };
 
-  const switchCamera = () => {
-    setFacingMode(prev => prev === "user" ? "environment" : "user");
+  const switchCamera = async () => {
+    const newFacingMode = facingMode === "user" ? "environment" : "user";
+    setFacingMode(newFacingMode);
+    
+    // Force restart camera with new facing mode
+    setIsLoading(true);
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+    
+    try {
+      const constraints = {
+        video: {
+          facingMode: newFacingMode,
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      };
+
+      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+      setStream(mediaStream);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+    } catch (error) {
+      console.error("Error switching camera:", error);
+      toast({
+        title: "Camera Error",
+        description: "Could not switch camera. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const capturePhoto = () => {
