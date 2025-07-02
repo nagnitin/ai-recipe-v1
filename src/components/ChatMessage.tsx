@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Bot, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -34,7 +35,9 @@ export const ChatMessage = ({ role, content, image }: ChatMessageProps) => {
               className="w-full max-w-xs rounded-lg mb-3 object-cover"
             />
           )}
-          <div className="text-sm whitespace-pre-wrap">{content}</div>
+          <div className="text-sm prose prose-sm max-w-none dark:prose-invert">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
         </Card>
       </div>
       

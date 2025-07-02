@@ -22,6 +22,7 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
 
   useEffect(() => {
     if (isOpen) {
+      // Auto-start with rear camera
       startCamera();
       checkCameraCount();
     } else {
