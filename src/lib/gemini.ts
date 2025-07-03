@@ -50,7 +50,9 @@ export async function chatWithAI(message: string, imageFile?: File): Promise<str
     if (imageFile) {
       const imageData = await fileToGenerativePart(imageFile);
       prompt = `
-You are a helpful cooking assistant. The user said: "${message}"
+You are a helpful cooking assistant. You must only answer questions related to cooking, recipes, food, ingredients, or kitchen topics. If the user asks about anything else, politely reply: 'Sorry, I can only answer questions about cooking, food, or recipes.'
+
+The user said: "${message}"
 
 Please analyze this image and respond to their question. Provide helpful, well-organized responses using:
 - Clear headings with emojis (##)
@@ -63,7 +65,9 @@ Focus on ingredients or recipes based on what you see in the image.
       content = [prompt, imageData];
     } else {
       prompt = `
-You are a helpful cooking assistant. The user said: "${message}"
+You are a helpful cooking assistant. You must only answer questions related to cooking, recipes, food, ingredients, or kitchen topics. If the user asks about anything else, politely reply: 'Sorry, I can only answer questions about cooking, food, or recipes.'
+
+The user said: "${message}"
 
 Please provide helpful cooking advice using clear formatting:
 - Use headings with emojis (##)
