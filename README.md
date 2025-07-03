@@ -86,7 +86,6 @@ AI Recipe Assistant is a web application that leverages Google Gemini AI to help
   - Safety monitoring (auto shut-off, temperature control).
   - Voice or app-based control.
 
-*If you're interested in contributing to the IoT/AI stove integration, please open an issue or pull request!*
 
 ---
 
