@@ -35,7 +35,7 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
     return () => {
       stopCamera();
     };
-  }, [isOpen, facingMode]);
+  }, [isOpen]);
 
   const checkCameraCount = async () => {
     try {
