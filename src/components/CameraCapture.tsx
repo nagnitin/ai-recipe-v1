@@ -22,9 +22,12 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
 
   useEffect(() => {
     if (isOpen) {
-      // Auto-start with rear camera
-      startCamera();
-      checkCameraCount();
+      // Auto-start with rear camera immediately
+      const initCamera = async () => {
+        await startCamera();
+        await checkCameraCount();
+      };
+      initCamera();
     } else {
       stopCamera();
     }
@@ -32,7 +35,14 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
     return () => {
       stopCamera();
     };
-  }, [isOpen, facingMode]);
+  }, [isOpen]);
+
+  // Separate effect for facingMode changes
+  useEffect(() => {
+    if (isOpen && facingMode) {
+      startCamera();
+    }
+  }, [facingMode]);
 
   const checkCameraCount = async () => {
     try {
@@ -50,6 +60,7 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
       // Stop existing stream first
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
+        setStream(null);
       }
 
       const constraints = {
@@ -65,6 +76,8 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
 
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
+        // Ensure video plays immediately
+        await videoRef.current.play();
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
