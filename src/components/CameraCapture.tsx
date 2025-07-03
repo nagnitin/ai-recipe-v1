@@ -35,14 +35,7 @@ export const CameraCapture = ({ onCapture, isOpen, onClose }: CameraCaptureProps
     return () => {
       stopCamera();
     };
-  }, [isOpen]);
-
-  // Separate effect for facingMode changes
-  useEffect(() => {
-    if (isOpen && facingMode) {
-      startCamera();
-    }
-  }, [facingMode]);
+  }, [isOpen, facingMode]);
 
   const checkCameraCount = async () => {
     try {
