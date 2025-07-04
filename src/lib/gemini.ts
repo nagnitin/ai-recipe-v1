@@ -8,6 +8,11 @@ const genAI = new GoogleGenerativeAI(API_KEY);
 // Get the model
 export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+interface ConversationMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
 export async function extractIngredientsAndRecipes(imageFile: File): Promise<string> {
   try {
     const imageData = await fileToGenerativePart(imageFile);
@@ -42,12 +47,40 @@ Keep responses clean, organized, and easy to read.
   }
 }
 
-export async function chatWithAI(message: string, imageFile?: File): Promise<string> {
+export async function chatWithAI(
+  message: string, 
+  imageFile?: File, 
+  conversationHistory?: ConversationMessage[]
+): Promise<string> {
   try {
     let prompt;
     let content: any[];
 
-    if (imageFile) {
+    // Build conversation context if provided
+    if (conversationHistory && conversationHistory.length > 0) {
+      // Use conversation history for context-aware responses
+      const historyText = conversationHistory
+        .map(msg => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
+        .join('\n');
+      
+      prompt = `
+You are a helpful cooking assistant. You must only answer questions related to cooking, recipes, food, ingredients, or kitchen topics. If the user asks about anything else, politely reply: 'Sorry, I can only answer questions about cooking, food, or recipes.'
+
+Previous conversation:
+${historyText}
+
+Current user message: "${message}"
+
+Please continue the conversation naturally, maintaining context from the previous interaction. If the user says they're ready or done with a step, continue to the next step or provide the next instruction. Provide helpful cooking advice using clear formatting:
+- Use headings with emojis (##)
+- Bullet points for ingredient lists
+- Numbered steps for instructions
+- Keep responses concise and practical
+
+Be friendly and informative in your response.
+`;
+      content = [prompt];
+    } else if (imageFile) {
       const imageData = await fileToGenerativePart(imageFile);
       prompt = `
 You are a helpful cooking assistant. You must only answer questions related to cooking, recipes, food, ingredients, or kitchen topics. If the user asks about anything else, politely reply: 'Sorry, I can only answer questions about cooking, food, or recipes.'
