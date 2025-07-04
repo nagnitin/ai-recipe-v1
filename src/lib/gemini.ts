@@ -35,6 +35,8 @@ Suggest 2-3 easy recipes using those ingredients. Format each recipe as:
 1. step one
 2. step two
 
+For each step, always specify the quantity, time duration, and temperature needed (if applicable). If a step is manual (e.g., 'chop onions'), you can skip time/temperature.
+
 Keep responses clean, organized, and easy to read.
 `;
 
@@ -75,6 +77,7 @@ Please continue the conversation naturally, maintaining context from the previou
 - Use headings with emojis (##)
 - Bullet points for ingredient lists
 - Numbered steps for instructions
+- For each step, always specify the quantity, time duration, and temperature needed (if applicable). If a step is manual (e.g., 'chop onions'), you can skip time/temperature.
 - Keep responses concise and practical
 
 Be friendly and informative in your response.
@@ -91,6 +94,7 @@ Please analyze this image and respond to their question. Provide helpful, well-o
 - Clear headings with emojis (##)
 - Bullet points for lists
 - Numbered steps for instructions
+- For each step, always specify the quantity, time duration, and temperature needed (if applicable). If a step is manual (e.g., 'chop onions'), you can skip time/temperature.
 - Keep responses concise and practical
 
 Focus on ingredients or recipes based on what you see in the image.
@@ -106,6 +110,7 @@ Please provide helpful cooking advice using clear formatting:
 - Use headings with emojis (##)
 - Bullet points for ingredient lists
 - Numbered steps for instructions
+- For each step, always specify the quantity, time duration, and temperature needed (if applicable). If a step is manual (e.g., 'chop onions'), you can skip time/temperature.
 - Keep responses concise and practical
 
 Be friendly and informative in your response.
